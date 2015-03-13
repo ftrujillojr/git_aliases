@@ -51,7 +51,8 @@ gnewbranch=git checkout -b $1
 gdelbranch=git checkout -d $1
 gforcedelbranch=git checkout -D $1 
 
-gremadd=git remote set-url origin --push --add $1
+gremadd=git remote add origin $1
+gremadd2nd=git remote set-url origin --push --add $1
 gremrm=git remote remove $1
 gremmv=git remote rename $1 $2
 
