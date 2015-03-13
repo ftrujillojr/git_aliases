@@ -1,140 +1,20 @@
-# ~/.aliases
+# ~/.git_svn_aliases
 
-#set MYDEBUG=1
-unset MYDEBUG
-
-if($?MYDEBUG) echo "One"
-
-alias lprod       'ssh bolnsgweb01.micron.com'
-alias ldev        'ssh nsglnxdev1.micron.com'
-alias ltest       'ssh telinux57.micron.com'
-alias lsig        'ssh boisig-srv1.micron.com'
-alias lsigmxa     'ssh mteng@mxa-srv1.xacn'
-# engtest1
-alias lsing       'ssh siltpd01.sing.micron.com'
-
-alias glstart     '~/glassfish-4.0/bin/asadmin start-domain -verbose'
-## Or, on Windows, from the Start menu, choose All Programs, then choose Java EE 7 SDK, then choose Start Application Server
-
-alias glstop      '~/glassfish-4.0/bin/asadmin stop-domain domain1 '
-## Or, on Windows, from the Start menu, choose All Programs, then choose Java EE 7 SDK, then choose Stop Application Server.
+set dollarNF = '$NF'
+set dollar='$'
+set sed_1='\1'
 
 
-# Given these SSD entries in ~/.alias.cfg for displaying tsums with SSD goggles on.
-#
-# default_format    slash_lot,product_grade,market_segment,uin,upass,configuration_depth,configuration_width,module_form_factor,test_facility,design_id,step,start,end,flow,machine_id
-# default_criteria -1 +0 -product_technology=MASS_FLASH -summary_type=~MODULE%
-
-set dollar0='$0'
-set dollar1='$1'
-set dollar2='$2'
-set dollar3='$3'
-set dollar4='$4'
-set dollar5='$5'
-set dollar6='$6'
-set bang='\\!'
-set splat='\\*'
-set ss="'"
-set qq='"'
-
-alias tsums_ssh "ssh pelinux6 tsums \!:*"
-
-alias tsums_uin_upass_awk "ssh pelinux6 tsums \!:* | awk $ss{uin+=$dollar4; upass+=$dollar5} END {printf($qq UIN %d   UPASS: %d\n$qq , uin, upass);}$ss"
-
-alias tsums_ssd_bang_lines "ssh pelinux6 tsums +c \!:* | egrep --text $ss^[$bang]$ss | awk $ss{print $dollar0}$ss "
-
-alias tsums_ssd_bang_count "ssh pelinux6 tsums +c \!:* | egrep --text $ss^[$bang]$ss | awk $ss{print $dollar0}$ss | wc"
-
-alias tsums_not_yielding  "ssh pelinux6 tsums -all -hbin1_yld!=100 \!:*"
-alias tsums_yielding  "ssh pelinux6 tsums -all -hbin1_yld=100 \!:*"
-alias frpt_yield "ssh pelinux6 frpt +module -myquick=/MARKET_SEGMENT,MODULE_DENSITY,PCB_DESIGN_ID,TEST_FACILITY,MODULE_PART_NUMBER/ \!:* "
-alias frpt_noreg "ssh pelinux6 frpt -showheader +ssd  +binonly -design_id -sort=// \!:*"
-
-alias merror      'ssh telinux11.micron.com "egrep -A 5 '\!:1' /u/summary/module_spool/log/log*"'
-alias merrorz     'ssh telinux11.micron.com "zgrep -A 5 '\!:1' /u/summary/module_spool/log/archive/log*"'
-
-
-set awk1='$1'
-set awk2='$2'
-set awk3='$3'
-set awk4='$4'
-set awk5='$5'
-set awk6='$6'
-set awk7='$7'
-set awk8='$8'
-set colon=':'
-
-
-if(! $?MY_OS ) then
-   setenv MY_OS `uname -o`
-endif
-
-if($MY_OS == "Cygwin") then  
-    alias p             'echo "$PATH" | perl -pi -e "s/[\;\:]/\n/g;"'
-    alias pp            'echo "$PATH" | perl -pi -e "s/[\;\:]/\n/g;";echo '';env | egrep "^HOST=|^OS_NAME=|^ARCH=|^USER=|^PERL5LIB=|^LD_LIBRARY_PATH=|^PATH=|^JAVA_HOME=|^http_proxy=|^GEM_HOME=|^MY_SVN_REPO="'
-    alias tree          'tree /f /a'
-else
-    alias p             "echo $PATH | perl -pi -e 's/[ \;\:]/\n/g;'"
-    alias pp            "$HOME/bin/show_progs.csh"
-endif
-
-if($?MYDEBUG) echo "Two"
-
-########################################################################################################
-
-alias a             'alias'
-alias A             'acroread \!* >& /dev/null &'
-
-alias bin           'cd ~/bin;pwd'
-alias big           'xrandr -s 1920x1080'
-
-alias cp            '/bin/cp -ip'
-alias cd            'chdir \!*'
-alias cdes          'source ~/bin/cdes.csh'
-alias change_backend_pwd   'ssh telinux57 "/usr/local/bin/yppasswd"'
-
-alias d             'pwd'
-alias dfind         'find . -type d -print | egrep "\!:1"'
-alias dfind1        'find . -maxdepth 1 -type d -print | egrep "\!:1"'
-alias dfind2        'find . -maxdepth 2 -type d -print | egrep "\!:1"'
-alias dfind3        'find . -maxdepth 3 -type d -print | egrep "\!:1"'
-alias dfind4        'find . -maxdepth 4 -type d -print | egrep "\!:1"'
-alias doc           'cd ~/public_html/MICRON/doc;pwd'
-alias diskhog       'du -k --exclude=.snapshot ~ | sort -nr | head -100'
-
-alias EHTTP         'sudo emacs /etc/httpd/conf/httpd.conf'
-
-if($MY_OS == "Cygwin" || $MY_DOMAIN != "(none)") then  
-    alias e             'emacs -bg lightyellow \!* &'
-else
-    alias e             'emacs -geometry 115x42+0+29 -fn "DejaVu Sans Mono-14" \!* &'
-endif
-
-if(-x "/mu/bin/firefox") then
-   alias firefox       '/mu/bin/firefox'
-else
-   unalias firefox
-endif
-
-alias ffind         'find . -type f -print | egrep "\!:1"'
-alias ffind1        'find . -maxdepth 1 -type f -print | egrep "\!:1"' 
-alias ffind2        'find . -maxdepth 2 -type f -print | egrep "\!:1"' 
-alias ffind3        'find . -maxdepth 3 -type f -print | egrep "\!:1"' 
-alias ffind4        'find . -maxdepth 4 -type f -print | egrep "\!:1"' 
-alias flush_cache   'sudo sync; sudo echo 3 > /proc/sys/vm/drop_caches'
-
-
-set awk_func1='{printf ( "%-25s %s\n", $1, $17 ); }'
-set awk_func2='{print $2}'
-alias getmyvnc      'ssh nsglnxdev1 ps | grep vnc | awk "$awk_func1" | grep micron.com | grep $USER | awk "$awk_func2"'
-alias getuid        'id -u \!:1'
-alias getgroup      'groups \!:1'
-alias showgroup     'egrep "\!:1" /etc/group'
-alias gem_versions  'gem list \!:1 --remote --all'
-alias gem_install_version 'gem install \!:1 -v \!:2'
+# SSH aliases
+# ===================================================================
+alias sshkeygen     'ssh-keygen -b 1024 -t rsa -f ~/.ssh/id_rsa'   
+alias sshkeygen2    'cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys'
+alias sshkeygen3    'chmod 700 ~/.ssh'
+alias sshkeygen4    'chmod 600 ~/.ssh/*'
 
 
 # GIT START
+# ===================================================================
 alias g               'echo "STATUS\n========" ; git status ; echo ""; git status --porcelain '
 alias gg              'git remote update ; echo "STATUS\n========" ; git status ; echo "\nLOG\n========" ; git --no-pager log -25 --pretty=format:"%h | %d | %an | %cn | %cd | %cr | %s" origin/master master HEAD; echo "\n\n(LOCAL) BRANCHES\n========" ; git branch -v ; echo "\n\n(REMOTE) BRANCHES\n========" ; git branch -r ;echo "\nBRANCHES NOT MERGED\n===================" ; git branch --no-merged ; echo "\nBRANCHES ALREADY MERGED\n=====================" ; git branch --merged;echo "\nFiles FETCHed, but not MERGEd\n=========================\n";git diff master origin/master --name-status;echo "\nGIT stash list\n=================\n";git stash list'
 alias ggg             'egrep "alias g[a-z]*" $HOME/.aliases | grep "git" | perl -pi -e "s/alias //g;"'
@@ -145,7 +25,6 @@ alias gfetch          'echo "FETCH\n" ; git fetch \!:1 \!:2 ; echo "FETCH_TAGS\n
  
 alias gd              'git diff master origin/master --name-status'
 alias gdiff           'git diff \!:1 \!:2 --name-status'
-set dollarNF = '$NF'
 alias gdhead          'git status | grep modified | egrep -v ".pyc|.class" | awk "{print $dollarNF}" | xargs git difftool HEAD --'
 
 alias gdt             'git difftool master origin/master -- \!:1'
@@ -181,136 +60,26 @@ alias gnewbranch      'git checkout -b \!:1'
 alias gdelbranch      'git branch -d \!:1'
 alias gforcedelbranch 'git branch -D \!:1'
  
-alias gremadd         'git remote set-url origin --push --add \!:1'
+alias gremadd         'git remote add origin \!:1'
+alias gremadd2nd      'git remote set-url origin --push --add \!:1'
 alias gremrm          'git remote remove \!:1'
 alias gremmv          'git remote rename \!:1 \!:2'
  
 alias ginit           'git init . ; echo "Initial git checkin" >> README.txt ; git add . ; git commit -m "Initial commit"'
 
- 
-alias h             'history \!* | tail -50'
-
-alias lll           'ls -Calrt' 
-alias ll            'ls -Clrt'
-alias ls            '/bin/ls'
-alias l             'ls -CF --color'
-alias L             'ls -Clrt'
-alias la            'ls -CaF --color'	
-alias lib           'cd ~/perl5lib;pwd'
-
-alias m             'less'
-alias mm            'cat \!:1 | less'
-
-alias M             'less -N'
-alias MM            'cat \!:1 | less -N'
-alias mem           'showSwap.pl;free -m'
-
-alias mv            '/bin/mv -i'
-alias MW            'mysql-workbench >& /dev/null &'
-
-alias nvu           'kompozer \!* &'
-#alias netbeans      $HOME/netbeans-7.4/bin/netbeans
-alias netbeans      $HOME/netbeans-8.0.2/bin/netbeans
-alias ntlm_get      "curl --ntlm -u WINNTDOM/$USER \!:1"
-
-alias oo            'ooffice &'
-alias oow           'oowriter \!:1 &'
-alias ooc           'oocalc \!:1 &'
-alias ood           'oodraw \!:1 &'
-alias ooi           'ooimpress \!:1 &'
-
-alias perl_local    "perl -MCPAN -Mlocal::lib -e 'CPAN::install(\!:1)'"
-alias pwd           'echo $cwd'
-alias ps            '/bin/ps axo user:15,pgrp,pid,ppid,%cpu,%mem,vsz,rss,tty,stat,start,time,command'
-alias prunen        'find /tmp -type f -user $USER -perm 644 -mmin +30 -mtime -90 | & grep -v "Permission denied" | xargs /bin/ls -alrt'
-alias prune         'find /tmp -type f -user $USER -perm 644 -mmin +30 -mtime -90 | & grep -v "Permission denied" | xargs /bin/rm -f'
-
-# This will auto update the title of the terminal as you chdir around
-alias precmd        'echo -n "\033]0;${HOST}  ${PWD}\a"'
-
-alias pymod         '/usr/local/bin/pip list'
-
-alias sperl         '~/bin/show_perl_version.csh'
 
 
-alias rm            '/bin/rm -i'
-alias rsn           'rsync -rlauvn --rsh=ssh --exclude "*~" --exclude ".snapshot" --exclude ".svn" --exclude ".git" --cvs-exclude'
-alias rs            'rsync -rlauv --rsh=ssh --exclude "*~" --exclude ".snapshot" --exclude ".svn" --exclude ".git" --cvs-exclude'
-alias rgrep         'egrep -R "\!:1" *'
-alias resize_vnc    'xrandr; echo "xrandr -s HxW"'
-
-if($?MYDEBUG) echo "BEFORE ruby rails rake"
-
-alias r                        'alias | egrep "_rails_|_gem_|_rake_|_firefox|_prod_|_devl_|_cap_|_svn_|_bundle_" '
-
-alias cmd_00_gem_server        'gem server >& /dev/null &;echo "Gem server startin in 3 seconds . . .please wait.";sleep 3;firefox http://localhost:8808;'
-alias cmd_01_rails_new         'rails new \!:1 --database=mysql --skip-git --skip-bundle;cd \!:1;tree --charset=ISO-8859 $PWD;'
-alias cmd_02_rails_bundle      "perl -i -pe 's/https:/http:/g;' Gemfile;bundle install"
-alias cmd_03_rails_database    "perl -i -pe 's/(username:)(\s+.+)/$awk1 \!:1/g;s/(password:)(.*)/$awk1 \!:2/g;s/(database:)\s+(.+)/$awk1 rubydev_$awk2/g;' ./config/database.yml;"
-alias cmd_04_devl_create       'rake db:create RAILS_ENV=development;'
-alias cmd_05_devl_migrate      'rake db:migrate RAILS_ENV=development;'
-alias cmd_06_rails_server      'rails server webrick &'
-alias cmd_07_firefox_test      'firefox http://localhost:3000'
-alias cmd_08_rake_realclean    'rake assets:clean;rake log:clear;rake tmp:cache:clear;/bin/rm -f log/*.log;echo "assets,logs,&cache were cleared."'
-
-alias cmd_09a_svn_add          'svn_add_recursive;svn status'
-alias cmd_09b_svn_import       'svn import . $MY_SVN_REPO/NetBeansProjects/\!:1;cd ..;mv \!:1 \!:1.old;svn co \!:1;cd \!:1'
-
-alias cmd_10_svn_commit        'svn commit'
-alias cmd_11_svn_ignore        "svn propset svn:ignore '*' ./log;svn propset svn:ignore '*' ./tmp;"
-
-alias cmd_12_svn_add           'svn_add_recursive;svn status'
-alias cmd_13_svn_commit_deploy 'svn commit -m "Prepared to deploy"'
-alias cmd_14_cap_capify        '~/bin/capify.pl'
-
-alias cmd_15_rake_clean        'rake assets:clean;rake log:clear;rake tmp:cache:clear;echo "assets,logs,&cache were cleared."'
-alias cmd_16_rake_erd_pdf      'rake erd attributes=content,foreign_keys title=NSG_PROJECT_MGR orientation=vertical filetype=pdf;mkdir -p public/pdf;/bin/mv -f erd.pdf public/pdf;ls -al public/pdf/erd.pdf'
-alias cmd_17_rake_erd_gif      'rake erd attributes=content,foreign_keys title=NSG_PROJECT_MGR orientation=vertical filetype=gif;/bin/mv -f erd.gif app/assets/images;ls -al app/assets/images/erd.gif'
-
-alias cmd_18_cap_deploy_setup  'cap deploy:setup'
-alias cmd_19_cap_deploy_check  'cap deploy:check'
-alias cmd_20_cap_deploy        'cap deploy'
-alias cmd_21_prod_create       'rake db:create RAILS_ENV=production;'
-alias cmd_22_prod_migrate      'rake db:migrate RAILS_ENV=production;rake db:seed RAILS_ENV=production;'
-alias cmd_23_bundle_precompile 'cd /var/www/rails_apps/\!:1_staging/current;rake assets:precompile RAILS_ENV=production;cd $HOME/NetBeansProjects/\!:1'
-
-alias cmd_24_cap_deploy_setup  'cap production deploy:setup'
-alias cmd_25_cap_deploy_check  'cap production deploy:check'
-alias cmd_26_cap_deploy        'cap production deploy'
-alias cmd_27_bundle_precompile 'cd /var/www/rails_apps/\!:1/current;rake assets:precompile RAILS_ENV=production;cd $HOME/NetBeansProjects/\!:1'
-alias cmd_28_rake_clean        'rake assets:clean;rake log:clear;rake tmp:cache:clear;echo "assets,logs,&cache were cleared."'
-alias cmd_29_rails_log         'tail -n 200 -f log/development.log | ~/bin/filter_log.pl -no_rendered -no_assets'
-
-# rails generate migration add_accessType_column_to_users accessType:string
-# http://guides.rubyonrails.org/migrations.html
-
-# Run one test   ruby -I test test/functional/children_controller_test.rb -n test_should_get_index
 
 
-if($?MYDEBUG) echo "AFTER ruby rails rake"
 
-alias rpmforge       'sudo yum --disablerepo="*" --enablerepo=rpmforge --enablerepo=rpmforge-extras \!*'
 
-alias S             'source ~/.aliases'
-alias SS            'source ~/.cshrc'
-
-alias s             'svn info;echo "==================================";svn status'
-alias ss            'svn info;echo "==================================";svn status --verbose'
-alias sss           'alias | grep svn'
-alias ssss          'java -jar $HOME/NetBeansProjects/SVNUtils/dist/SVNUtils.jar'
-alias src           'cd ~/NetBeansProjects;pwd'
-alias small         'xrandr -s 1024x768'
-alias senv          'setenv DISPLAY `getmyvnc`'
-alias svnc          '~/bin/show_vnc_connections.csh'
-alias show_rpm_installed "rpm -qa --qf '%{INSTALLTIME} (%{INSTALLTIME:date}): %{NAME}-%{VERSION}-%{RELEASE}.%{ARCH}\n' | sort -n"
-alias subl          '/opt/Sublime_Text_2/sublime_text \!* &'
-alias show_hardware_info 'sudo dmidecode'
-
-if($?MYDEBUG) echo "Before SVN"
+# SVN START      Example env variable =>   setenv MY_SVN_REPO     http://svn/NSG/comp_ssd/software/trunk
+# ===================================================================
+alias s                    'svn info;echo "==================================";svn status'
+alias ss                   'svn info;echo "==================================";svn status --verbose'
+alias sss                  'alias | grep svn'
 
 # ANY dir  (svn)
-set dollar='$'
-set sed_1='\1'
 alias svn_tag              "svn update;svn log -l 1 | egrep 'r[0-9]+' | sed -r 's/(.*)$dollar/$sed_1 VERSION \!*/g' | tee -a VERSION.txt;svn commit -m 'version \!*' VERSION.txt"
 alias svn_mkdir            'svn mkdir $MY_SVN_REPO/\!:1'
 alias svn_projects         'svn list --verbose $MY_SVN_REPO'
@@ -330,7 +99,6 @@ alias svn_exec             'svn propset svn:executable on \!*'
 
 # If in SVN dir, then adding, rm, or revert NEW files or files that have been Added/Modified/Deleted but no COMMIT  (svn)
 
-
 alias svn_show_recursive   "svn status | egrep '^[\?]' | egrep -v '~' | awk '{ print $awk2}'"
 alias svn_add_recursive    "svn status | egrep '^[\?]' | egrep -v '~' | awk '{ print $awk2}' | xargs svn add"
 alias svn_rm_recursive     "svn status | egrep '^[\?]' | egrep -v '~' | awk '{ print $awk2}' | xargs /bin/rm -rf"
@@ -347,35 +115,3 @@ alias svn_ignore_remove    "svn propdel svn:ignore \!:1"
 
 alias svn_resolve_revert   "svn resolve --accept working \!:1; svn revert \!:1; svn status;"
 
-if($?MYDEBUG) echo "AFTER SVN"
-
-alias sshkeygen     'ssh-keygen -b 1024 -t rsa -f ~/.ssh/id_rsa'   
-alias sshkeygen2    'cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys'
-alias sshkeygen3    'chmod 700 ~/.ssh'
-alias sshkeygen4    'chmod 600 ~/.ssh/*'
-
-alias t             'tree --charset=ISO-8859 $PWD'
-alias ttt            'tree --charset=ISO-8859 -a $PWD'
-alias T             'tree --charset=ISO-8859 -p $PWD'
-alias TTT            'tree --charset=ISO-8859 -pags $PWD'
-
-alias tsums_test_facilities     "tsums -all -format=test_facility -6.8 +0.3      | perl -pi -e 's/[ \t]//g;' | sort -u"
-alias tsums_market_segments     "tsums -all -format=market_segment -6.8 +0.3     | perl -pi -e 's/[ \t]//g;' | sort -u"
-alias tsums_module_form_factor  "tsums -all -format=module_form_factor -6.8 +0.3 | perl -pi -e 's/[ \t]//g;' | sort -u"
-alias tsums_step                "tsums -all -format=step -6.8 +0.3               | perl -pi -e 's/[ \t]//g;' | sort -u"
-
-
-alias view_ports      'sudo netstat -natp'
-alias view_ports2     'sudo netstat -atp'
-alias view_interfaces 'sudo netstat -i'
-alias view_routes     'sudo netstat -i'
-alias view_firewall   'sudo iptables -nL'
-
-alias xwindow_geometry 'xwininfo'
-
-if(-x "~/bin/derive_PERL5OPT.pl") then
-    setenv PERL5OPT `~/bin/derive_PERL5OPT.pl`
-endif
-
-
-if($?MYDEBUG) echo "Done"
