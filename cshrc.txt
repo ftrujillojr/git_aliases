@@ -1,0 +1,298 @@
+# ~/.cshrc
+
+##setenv MYDEBUG 1
+
+if($?MYDEBUG) echo "DEBUG: Starting INIT"
+
+umask 022
+set autologout=0
+set history=100
+setenv COLUMNS 180
+set nobeep
+
+setenv MY_DOMAIN `domainname`
+
+if($MY_DOMAIN == "(none)") then
+   setenv EDITOR 'emacs -geometry 115x42+0+29 -fn "DejaVu Sans Mono-14"'
+   setenv SOFTWARE_ROOT "/opt"
+else
+   setenv EDITOR 'emacs -geometry 115x42+0+29 -bg lightyellow'
+   #setenv SOFTWARE_ROOT "$HOME"
+   setenv SOFTWARE_ROOT "/opt"
+endif
+
+setenv ORACLE_HOME /usr/lib/oracle/12.1/client64
+
+
+env | egrep "^HOST=si" > /dev/null
+if($? == 0) then
+   setenv http_proxy "http://proxy.sing.micron.com:8080/"
+   setenv https_proxy "https://proxy.sing.micron.com:8080/"
+else
+   setenv http_proxy "http://proxy.micron.com:8080/"
+   setenv https_proxy "https://proxy.micron.com:8080/"
+endif
+
+
+if (-d "/home/ftrujillo/netbeans-7.4/extide/ant") then
+   setenv ANT_HOME "/home/ftrujillo/netbeans-7.4/extide/ant"
+endif
+
+setenv MY_SVN_REPO     http://svn/NSG/comp_ssd/software/trunk
+setenv MY_SVN_REPO_TAG software
+
+
+# tnsnames.ora should be in TNS_ADMIN
+setenv TNS_ADMIN       $HOME/oracle
+# login.sql should be in SQLPATH
+setenv SQLPATH        $HOME/oracle/sql
+
+#set prompt="$MY_SVN_REPO_TAG => %n@%M:%/ [%h]%# "
+set prompt="%M:%/ [%h]%# "
+
+setenv MY_OS `uname -o`
+
+if (! $?HOST)          setenv HOST `hostname | awk -F. '{print $1}'`
+if (! $?ARCH)          setenv ARCH `arch`
+if (! $?OS_NAME)       setenv OS_NAME `uname -s`
+if ($OS_NAME == SunOS) setenv OS_NAME "sunos`uname -r | cut -d'.' -f1,2`"
+
+if(-d "/usr/java/latest" ) then
+   setenv JAVA_HOME /usr/java/latest  # http://www.oracle.com/technetwork/java/javase/downloads
+endif
+
+setenv CLASSPATH "."
+
+foreach np ($HOME/NetBeansProjects/SQLiteDriverJDBC/sqlite-jdbc-3.7.2.jar \
+            $HOME/NetBeansProjects/SQLiteDriverJDBC/sqlite-jdbc-3.7.2-javadoc.jar \
+            $HOME/netbeans-7.4/extide/ant/lib \
+           ) 
+  if(-d $np || -f $np) then
+    setenv CLASSPATH "${CLASSPATH}:$np"
+  endif
+end
+
+
+if(! $?PERL5LIB) then 
+   setenv PERL5LIB "$HOME/perl5lib;$HOME/perl5"
+else
+   foreach np ($HOME/perl5lib $HOME/perl5) 
+      set found=0;
+      foreach item (`echo $PERL5LIB | perl -pi -e 's/[\;]/\n/g;'`) 
+         if($np == $item) set found=1;
+      end
+      if(! $found && -d $np) setenv PERL5LIB "${PERL5LIB};$np"
+   end
+endif
+
+if($?MYDEBUG) echo "DEBUG: Ending INIT"
+
+# ============ Laptop running Cygwin, just need minimal env.  PATH setup by Cygwin. ====================
+
+if($MY_OS == "Cygwin") then  
+   if($?MYDEBUG) echo "DEBUG: Start Cygwin"
+
+   set history=100
+   set prompt="%n@%M:%/ [%h]%# "
+
+   setenv EDITOR 'emacs'
+   setenv PERL5LIB `perl -e '$ENV{'PERL5LIB'} =~ s/\\/\//g; print $ENV{'PERL5LIB'}'`
+   setenv PERL5LIB `perl -e '$ENV{'PERL5LIB'} =~ s/C:[\/]Users/\/cygdrive\/c\/Users/g; print $ENV{'PERL5LIB'}'`
+
+   if(! $?PERL5LIB) then 
+      setenv PERL5LIB "$HOME/perl5lib;$HOME/perl5"
+   else
+      foreach np ($HOME/perl5lib $HOME/perl5) 
+         set found=0;
+         foreach item (`echo $PERL5LIB | perl -pi -e 's/[\;]/\n/g;'`) 
+            if($np == $item) set found=1;
+         end
+         if(! $found && -d $np) setenv PERL5LIB "${PERL5LIB};$np"
+      end
+   endif
+
+   setenv PERL5LIB `perl -e '$ENV{'PERL5LIB'} =~ s/[\;\:]{2}/\;/g; print $ENV{'PERL5LIB'}'`
+
+   foreach np ($HOME/bin )  # Install AFTER path
+      set found=0;
+      foreach item (`echo \"$PATH\" | perl -pi -e 's/[\:]/\n/g;'`) 
+         if($np == $item) set found=1;
+      end
+    
+      if(! $found && -d $np) then
+          setenv PATH "${PATH}:$np"
+      endif
+   end
+
+   source $HOME/.aliases
+
+   if($?MYDEBUG) echo "DEBUG: End Cygwin"
+   exit(0);  # Do no more for Cygwin
+
+endif
+
+# ---------------------- LINUX standard setup for Micron paths --------------------------
+if($?MYDEBUG) echo "DEBUG: Starting LINUX "
+
+# start off with BASE path.
+set path = (/usr/local/bin /usr/lang /usr/ucb /usr/bin /bin /sbin /usr/sbin)
+rehash
+
+foreach np ( /opt/gnome/bin /opt/kde3/bin /usr/NX/bin )  # Install BEFORE path if exists
+   set found=0;
+   foreach item (`echo $PATH | perl -pi -e 's/[\:]/\n/g;'`) 
+      if($np == $item) set found=1;
+   end
+   if(! $found && -d $np) then
+      set path = ($np $path)
+   endif
+end
+
+
+
+foreach np (/usr/micron/bin /usr/micron/linux/bin \
+            /usr/bin/X11 /mu/bin \
+            /u/testeng/bin /u/flashsrv/bin /u/flashsrv/bin/ftrujillo \
+            /home/ftrujillo/NSG_released/bin /home/modsum/bin \
+            $ORACLE_HOME/bin \
+           ) # Install AFTER path if exists
+   set found=0;
+   foreach item (`echo $PATH | perl -pi -e 's/[\:]/\n/g;'`) 
+      if($np == $item) set found=1;
+   end
+   if(! $found && -d $np) then
+      set path = ($path $np)
+   endif
+end
+
+
+
+foreach np ($HOME/netbeans-7.4/bin $HOME/netbeans-7.4/extide/ant/bin \
+            /u/fuseid/bin /u/pesoft/bin /u/prbsoft/bin /u/summary/bin \
+           ) # Install BEFORE path if exists
+   set found=0;
+   foreach item (`echo $PATH | perl -pi -e 's/[\:]/\n/g;'`) 
+      if($np == $item) set found=1;
+   end
+   if(! $found && -d $np) then
+      set path = ($np $path)
+   endif
+end
+
+if($?MYDEBUG) echo "DEBUG: Starting LINUX libraries"
+
+if($ARCH == "x86_64") then # Setup 64BIT libraries first
+   if (! $?LD_LIBRARY_PATH ) setenv LD_LIBRARY_PATH "/usr/local/lib64"
+
+   foreach np (/usr/lib64 /lib64 $ORACLE_HOME/lib ) 
+      set found=0;
+      foreach item (`echo $LD_LIBRARY_PATH | perl -pi -e 's/[\:]/\n/g;'`) 
+         if($np == $item) set found=1;
+      end  
+      if(! $found && -d $np) then
+         setenv LD_LIBRARY_PATH "${LD_LIBRARY_PATH}:$np"
+      endif
+   end
+endif
+
+if (! $?LD_LIBRARY_PATH ) setenv LD_LIBRARY_PATH "/usr/local/lib"
+
+foreach np (/usr/lib /lib /usr/micron/lib )  # Setup 32BIT libraries second
+   set found=0;
+   foreach item (`echo $LD_LIBRARY_PATH | perl -pi -e 's/[\:]/\n/g;'`) 
+      if($np == $item) set found=1;
+   end  
+   if(! $found != 0 && -d $np) setenv LD_LIBRARY_PATH "${LD_LIBRARY_PATH}:$np"
+end
+
+if($?MYDEBUG) echo "DEBUG: End LINUX libraries"
+
+# ===================== MY Custom PATHS (ALWAYS) ===============================================
+# 
+if($?MYDEBUG) echo "DEBUG: Starting CUSTOM"
+
+foreach np ($HOME/bin)  # Install BEFORE path
+   set found=0;
+   foreach item (`echo $PATH | perl -pi -e 's/[\:]/\n/g;'`) 
+      if($np == $item) set found=1;
+   end
+
+   if(! $found && -d $np) then
+      set path = ($np $path)
+   endif
+end
+
+if(-d "$SOFTWARE_ROOT/ruby/lib/ruby/gems") then
+   setenv GEM_HOME $SOFTWARE_ROOT/ruby/lib/ruby/gems
+else
+   if($?GEM_HOME) then
+      unsetenv GEM_HOME
+   endif
+endif
+
+if($?JAVA_HOME) then
+   foreach np ($JAVA_HOME/bin)  # Install BEFORE path
+      set found=0;
+      foreach item (`echo $PATH | perl -pi -e 's/[\:]/\n/g;'`) 
+         if($np == $item) set found=1;
+      end
+
+      if(! $found && -d $np) then
+         set path = ($np $path)
+      endif
+   end
+endif
+
+
+if($?GEM_HOME) then
+   foreach np ($SOFTWARE_ROOT/ruby/bin $GEM_HOME/bin)  # Install BEFORE path
+      set found=0;
+      foreach item (`echo $PATH | perl -pi -e 's/[\:]/\n/g;'`) 
+         if($np == $item) set found=1;
+      end
+
+      if(! $found && -d $np) then
+         set path = ($np $path)
+      endif
+   end
+endif
+
+rehash
+
+if($?MYDEBUG) echo "DEBUG: Starting CUSTOM  aliases"
+
+if(-f $HOME/.aliases) then
+   source $HOME/.aliases  # let each user decide aliases
+endif
+
+if($?MYDEBUG) then
+    echo "====== ENV ====="
+    env | egrep "^HOST=|^OS_NAME=|^ARCH=|^USER=|^PERL5LIB=|^LD_LIBRARY_PATH=|^PATH=|^JAVA_HOME=|^GEM_HOME|^PERL5LIB"
+    echo ""
+    echo "====== VERSIONS ====="
+    echo -n "perl "
+    perl -e 'printf("%s\n", $^V);'
+    if(-x ruby) then
+       echo -n "ruby "
+       ruby --version
+    endif
+    if(-x gem) then
+       echo -n "gem "
+       gem --version
+    endif
+    if(-x rails) then
+       echo -n "rails "
+       rails --version
+    endif
+    if(-x rake) then
+       echo -n "rake "
+       rake --version
+    endif
+    echo ""
+endif
+
+cd $HOME
+
+
+
+

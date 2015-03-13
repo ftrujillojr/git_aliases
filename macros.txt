@@ -1,0 +1,58 @@
+
+ll=ls -lrt $t
+
+subl=sublime_text.exe $1
+
+g=echo off $t echo STATUS $t echo ======== $t git status $t echo. $t git status --porcelain $t echo on
+gg=echo off $t git remote update $t echo STATUS $t echo ======== $t git status $t echo. $t echo LOG $t echo ======== $t git --no-pager log -25 --pretty=format:"%h | %d | %an | %cn | %cd | %cr | %s" origin/master HEAD FETCH_HEAD master $t echo. $t echo. $t echo (LOCAL) BRANCHES $t echo ======== $t git branch -v $t echo. $t echo (REMOTE) BRANCHES $t echo ========================= $t git branch -r $t echo. $t echo BRANCHES NOT MERGED $t echo =================== $t git branch --no-merged $t echo. $t echo BRANCHES ALREADY MERGED $t echo ===================== $t git branch --merged $t echo. $t echo Files FETCHed, but not MERGEd $t echo ========================= $t git diff master origin/master --name-status $t echo. $t echo GIT stash list $t echo ================= $t git stash list $t echo on
+
+
+ggg=type C:\Users\ftrujillo\Documents\DOSKEY\macros.txt
+gggg=echo off $t echo GLOBAL $t echo. $t git config --list --global $t echo. $t echo LOCAL $t git config --list --local $t echo on
+
+gf=echo off $t echo FETCH $t echo. $t git fetch origin master $t echo. $t echo FETCH_TAGS $t echo. $t git fetch origin master --tags $t echo. $t echo DIFF $t echo. $t git diff master origin/master --name-status $t echo on
+gfetch=echo off $t echo FETCH $t echo. $t git fetch $1 $2 $t echo FETCH_TAGS $t echo. $t git fetch --tags $1 $2 $t echo on
+
+gd=git diff master origin/master --name-status
+gdiff=git diff $1 $2 --name-status
+gdt=git difftool master origin/master -- $1
+gdt2=git difftool HEAD -- $1
+gdt3=git difftool FETCH_HEAD -- $1
+gdifftool=git difftool $1 $2 -- $3
+
+gm=git merge FETCH_HEAD
+gmerge=git merge $1
+gmt=git mergetool --no-prompt $1
+
+
+gpull=echo off $t git pull origin master $t git pull origin master --tags $t echo on
+gpush=echo off $t git push origin master $t git push origin master --tags $t echo on
+
+
+gadd=echo off $t git add $1 $t git status $t echo on
+grm=echo off $t git rm $1 $t git status $t echo on
+gmv=echo off $t git mv $1 $2 $t git status $t echo on
+gcommit=git commit -m "$*"
+gabandon=git checkout HEAD -- $1
+gunstage=git reset HEAD -- $1
+
+glog=git log --graph --pretty=format:"%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset" --abbrev-commit --date=relative
+glog2=git log --graph --name-status --pretty=format:"%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset" --abbrev-commit --date=relative origin/master
+
+gshow=git show $1
+gtag=git tag -a $1 $2
+gannotate=git annotate $1
+
+gbranch=git branch -v
+gco=git checkout master 
+gcotags=git checkout tags/$1
+gcobranch=git checkout $1
+gnewbranch=git checkout -b $1
+gdelbranch=git checkout -d $1
+gforcedelbranch=git checkout -D $1 
+
+gremadd=git remote set-url origin --push --add $1
+gremrm=git remote remove $1
+gremmv=git remote rename $1 $2
+
+ginit=echo off $t git init . $t echo Initial git checkin > README.txt $t git add . $t git commit -m "Initial commit" $t echo on
