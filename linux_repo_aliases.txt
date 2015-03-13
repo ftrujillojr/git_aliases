@@ -17,7 +17,7 @@ alias sshkeygen4    'chmod 600 ~/.ssh/*'
 # ===================================================================
 alias g               'echo "STATUS\n========" ; git status ; echo ""; git status --porcelain '
 alias gg              'git remote update ; echo "STATUS\n========" ; git status ; echo "\nLOG\n========" ; git --no-pager log -25 --pretty=format:"%h | %d | %an | %cn | %cd | %cr | %s" origin/master master HEAD; echo "\n\n(LOCAL) BRANCHES\n========" ; git branch -v ; echo "\n\n(REMOTE) BRANCHES\n========" ; git branch -r ;echo "\nBRANCHES NOT MERGED\n===================" ; git branch --no-merged ; echo "\nBRANCHES ALREADY MERGED\n=====================" ; git branch --merged;echo "\nFiles FETCHed, but not MERGEd\n=========================\n";git diff master origin/master --name-status;echo "\nGIT stash list\n=================\n";git stash list'
-alias ggg             'egrep "alias g[a-z]*" $HOME/.aliases | grep "git" | perl -pi -e "s/alias //g;"'
+alias ggg             'egrep "alias g[a-z]*" $HOME/.linux_repo_aliases | grep "git" | perl -pi -e "s/alias //g;"'
 alias gggg            'echo "GLOBAL + LOCAL\n" ; git config --list'
  
 alias gf              'echo "FETCH\n" ; git fetch origin master ; echo "\nFETCH_TAGS\n" ; git fetch origin master --tags ; echo "\nDIFF\n" ; git diff master origin/master --name-status'
