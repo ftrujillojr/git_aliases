@@ -1,5 +1,5 @@
 
-ll=ls -lrt $t
+ll=echo off $t ls -lrt $t echo on
 
 subl=sublime_text.exe $1
 
