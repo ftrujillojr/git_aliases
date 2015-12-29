@@ -7,7 +7,7 @@ g=echo off $t echo STATUS $t echo ======== $t git status $t echo. $t git status 
 gg=echo off $t git remote update $t echo STATUS $t echo ======== $t git status $t echo. $t echo LOG $t echo ======== $t git --no-pager log -25 --pretty=format:"%h | %d | %an | %cn | %cd | %cr | %s" origin/master HEAD FETCH_HEAD master $t echo. $t echo. $t echo (LOCAL) BRANCHES $t echo ======== $t git branch -v $t echo. $t echo (REMOTE) BRANCHES $t echo ========================= $t git branch -r $t echo. $t echo BRANCHES NOT MERGED $t echo =================== $t git branch --no-merged $t echo. $t echo BRANCHES ALREADY MERGED $t echo ===================== $t git branch --merged $t echo. $t echo Files FETCHed, but not MERGEd $t echo ========================= $t git diff master origin/master --name-status $t echo. $t echo GIT stash list $t echo ================= $t git stash list $t echo on
 
 
-ggg=type C:\Users\ftrujillo\Documents\DOSKEY\macros.txt
+ggg=type C:\Users\FTRUJILLO\GITHUB\git_aliases\macros.txt
 gggg=echo off $t echo GLOBAL $t echo. $t git config --list --global $t echo. $t echo LOCAL $t git config --list --local $t echo on
 
 gf=echo off $t echo FETCH $t echo. $t git fetch origin master $t echo. $t echo FETCH_TAGS $t echo. $t git fetch origin master --tags $t echo. $t echo DIFF $t echo. $t git diff master origin/master --name-status $t echo on
