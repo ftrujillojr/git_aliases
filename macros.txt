@@ -4,7 +4,7 @@ ll=echo off $t ls -lrt $t echo on
 subl=sublime_text.exe $1
 
 g=echo off $t echo STATUS $t echo ======== $t git status $t echo. $t git status --porcelain $t echo on
-gg=echo off $t git remote update $t echo STATUS $t echo ======== $t git status $t echo. $t echo LOG $t echo ======== $t git --no-pager log -25 --pretty=format:"%h | %d | %an | %cn | %cd | %cr | %s" origin/master HEAD FETCH_HEAD master $t echo. $t echo. $t echo (LOCAL) BRANCHES $t echo ======== $t git branch -v $t echo. $t echo (REMOTE) BRANCHES $t echo ========================= $t git branch -r $t echo. $t echo BRANCHES NOT MERGED $t echo =================== $t git branch --no-merged $t echo. $t echo BRANCHES ALREADY MERGED $t echo ===================== $t git branch --merged $t echo. $t echo Files FETCHed, but not MERGEd $t echo ========================= $t git diff master origin/master --name-status $t echo. $t echo GIT stash list $t echo ================= $t git stash list $t echo on
+gg=echo off $t git remote update $t echo STATUS $t echo ======== $t git status $t echo. $t echo LOG $t echo ======== $t git --no-pager log -25 --pretty=format:"%h | %d | %an | %cn | %cd | %cr | %s" --all $t echo. $t echo. $t echo (LOCAL) BRANCHES $t echo ======== $t git branch -v $t echo. $t echo (REMOTE) BRANCHES $t echo ========================= $t git branch -r $t echo. $t echo BRANCHES NOT MERGED $t echo =================== $t git branch --no-merged $t echo. $t echo BRANCHES ALREADY MERGED $t echo ===================== $t git branch --merged $t echo. $t echo Files FETCHed, but not MERGEd $t echo ========================= $t git diff master origin/master --name-status $t echo. $t echo GIT stash list $t echo ================= $t git stash list $t echo on
 
 
 ggg=type C:\Users\FTRUJILLO\GITHUB\git_aliases\macros.txt
@@ -36,8 +36,8 @@ gcommit=git commit -m "$*"
 gabandon=git checkout HEAD -- $1
 gunstage=git reset HEAD -- $1
 
-glog=git log --graph --pretty=format:"%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset" --abbrev-commit --date=relative
-glog2=git log --graph --name-status --pretty=format:"%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset" --abbrev-commit --date=relative origin/master
+glog=git log --graph --pretty=format:"%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset" --abbrev-commit --date=relative --all
+glog2=git log --graph --name-status --pretty=format:"%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset" --abbrev-commit --date=relative --all
 
 gshow=git show $1
 gtag=git tag -a $1 $2

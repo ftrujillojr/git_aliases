@@ -18,7 +18,7 @@ alias sshkeygen4    'chmod 600 ~/.ssh/*'
 # GIT START
 # ===================================================================
 alias g               'echo "STATUS\n========" ; git status ; echo ""; git status --porcelain '
-alias gg              'git remote update ; echo "STATUS\n========" ; git status ; echo "\nLOG\n========" ; git --no-pager log -25 --pretty=format:"%h | %d | %an | %cn | %cd | %cr | %s" origin/master master HEAD; echo "\n\n(LOCAL) BRANCHES\n========" ; git branch -v ; echo "\n\n(REMOTE) BRANCHES\n========" ; git branch -r ;echo "\nBRANCHES NOT MERGED\n===================" ; git branch --no-merged ; echo "\nBRANCHES ALREADY MERGED\n=====================" ; git branch --merged;echo "\nFiles FETCHed, but not MERGEd\n=========================\n";git diff master origin/master --name-status;echo "\nGIT stash list\n=================\n";git stash list'
+alias gg              'git remote update ; echo "STATUS\n========" ; git status ; echo "\nLOG\n========" ; git --no-pager log -25 --pretty=format:"%h | %d | %an | %cn | %cd | %cr | %s" --all; echo "\n\n(LOCAL) BRANCHES\n========" ; git branch -v ; echo "\n\n(REMOTE) BRANCHES\n========" ; git branch -r ;echo "\nBRANCHES NOT MERGED\n===================" ; git branch --no-merged ; echo "\nBRANCHES ALREADY MERGED\n=====================" ; git branch --merged;echo "\nFiles FETCHed, but not MERGEd\n=========================\n";git diff master origin/master --name-status;echo "\nGIT stash list\n=================\n";git stash list'
 alias ggg             'egrep "alias g[a-z]*" $HOME/.linux_repo_aliases | grep "git" | perl -pi -e "s/alias //g;"'
 alias gggg            'echo "GLOBAL + LOCAL\n" ; git config --list'
  
@@ -48,8 +48,8 @@ alias gcommit         'git commit -m "\!*"'
 alias gabandon        'git checkout HEAD -- \!:1'
 alias gunstage        'git reset HEAD -- \!:1'
  
-alias glog            'git log --graph --pretty=format:"%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset" --abbrev-commit --date=relative origin/master'
-alias glog2           'git log --graph --name-status --pretty=format:"%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset" --abbrev-commit --date=relative origin/master'
+alias glog            'git log --graph --pretty=format:"%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset" --abbrev-commit --date=relative --all'
+alias glog2           'git log --graph --name-status --pretty=format:"%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset" --abbrev-commit --date=relative --all'
 alias gshow           'git show \!:1'
 alias gtag            'git tag -a \!:1 \!:2'
 alias gannotate       'git annotate \!:1'
