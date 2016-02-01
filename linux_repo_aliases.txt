@@ -18,7 +18,7 @@ alias sshkeygen4    'chmod 600 ~/.ssh/*'
 # GIT START
 # ===================================================================
 alias g               'echo "STATUS\n========" ; git status ; echo ""; git status --porcelain '
-alias gg              'git remote update ; echo "STATUS\n========" ; git status ; echo "\nLOG\n========" ; git --no-pager log -25 --pretty=format:"%h | %d | %an | %cn | %cd | %cr | %s" origin/master master HEAD; echo "\n\n(LOCAL) BRANCHES\n========" ; git branch -v ; echo "\n\n(REMOTE) BRANCHES\n========" ; git branch -r ;echo "\nBRANCHES NOT MERGED\n===================" ; git branch --no-merged ; echo "\nBRANCHES ALREADY MERGED\n=====================" ; git branch --merged;echo "\nFiles FETCHed, but not MERGEd\n=========================\n";git diff master origin/master --name-status;echo "\nGIT stash list\n=================\n";git stash list'
+alias gg              'git remote update ; echo "STATUS\n========" ; git status ; echo "\nLOG\n========" ; git --no-pager log -25 --pretty=format:"%h | %d | %an | %cn | %cd | %cr | %s" --all; echo "\n\n(LOCAL) BRANCHES\n========" ; git branch -v ; echo "\n\n(REMOTE) BRANCHES\n========" ; git branch -r ;echo "\nBRANCHES NOT MERGED\n===================" ; git branch --no-merged ; echo "\nBRANCHES ALREADY MERGED\n=====================" ; git branch --merged;echo "\nFiles FETCHed, but not MERGEd\n=========================\n";git diff master origin/master --name-status;echo "\nGIT stash list\n=================\n";git stash list'
 alias ggg             'egrep "alias g[a-z]*" $HOME/.linux_repo_aliases | grep "git" | perl -pi -e "s/alias //g;"'
 alias gggg            'echo "GLOBAL + LOCAL\n" ; git config --list'
  
@@ -40,6 +40,17 @@ alias gmt             'git mergetool --no-prompt \!:1'
  
 alias gpull           'git pull origin master ; git pull origin master --tags'
 alias gpush           'git push origin master ; git push origin master --tags'
+
+## If you git push and your updates were rejected due to other changes checked in by someone else, then git pull --rebase
+alias gpullrebase     'git pull --rebase origin master'
+
+## Check for merge conflicts with git status, if any.
+## git add or git rm files one at a time if there are merge issues, then rebase.
+alias grebase         'git rebase --continue'
+
+## If you are totally hosed, then do this; otherwise, you are ok to do git push
+alias grebaseabort    'git rebase --abort'
+
  
 alias gadd            'git add \!:1 ; git status'
 alias grm             'git rm \!:1 ; git status'
@@ -48,8 +59,8 @@ alias gcommit         'git commit -m "\!*"'
 alias gabandon        'git checkout HEAD -- \!:1'
 alias gunstage        'git reset HEAD -- \!:1'
  
-alias glog            'git log --graph --pretty=format:"%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset" --abbrev-commit --date=relative origin/master'
-alias glog2           'git log --graph --name-status --pretty=format:"%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset" --abbrev-commit --date=relative origin/master'
+alias glog            'git log --graph --pretty=format:"%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset" --abbrev-commit --date=relative --all'
+alias glog2           'git log --graph --name-status --pretty=format:"%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset" --abbrev-commit --date=relative --all'
 alias gshow           'git show \!:1'
 alias gtag            'git tag -a \!:1 \!:2'
 alias gannotate       'git annotate \!:1'
@@ -61,6 +72,7 @@ alias gcobranch       'git checkout \!:1'
 alias gnewbranch      'git checkout -b \!:1'
 alias gdelbranch      'git branch -d \!:1'
 alias gforcedelbranch 'git branch -D \!:1'
+alias gpush2branch    'git push -u origin \!:1'
  
 alias gremadd         'git remote add origin \!:1'
 alias gremadd2nd      'git remote set-url origin --push --add \!:1'
