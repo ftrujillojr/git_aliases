@@ -1,4 +1,6 @@
 *~
+idea/
+*.iml
 .snapshot/
 *.pyc
 *.[oa]
@@ -8,6 +10,7 @@ tmp/sessions/
 tmp/cache/
 tmp/pids/
 .svn/
+nbproject/
 nbproject/private/
 dist/
 build/
@@ -15,6 +18,10 @@ build/
 *.db
 target/
 Thumbs.db
+.project
+.settings/
+.classpath
+hs_err_pid
 *.obj
 *.exe
 *.pdb
