@@ -65,21 +65,32 @@ alias gshow           'git show \!:1'
 alias gtag            'git tag -a \!:1 \!:2'
 alias gannotate       'git annotate \!:1'
  
-alias gbranch         'git branch -v'
-alias gco             'git checkout master'
-alias gcotags         'git checkout tags/\!:1'
-alias gcobranch       'git checkout \!:1'
-alias gnewbranch      'git checkout -b \!:1'
-alias gdelbranch      'git branch -d \!:1'
-alias gforcedelbranch 'git branch -D \!:1'
-alias gpush2branch    'git push -u origin \!:1'
- 
-alias gremadd         'git remote add origin \!:1'
-alias gremadd2nd      'git remote set-url origin --push --add \!:1'
-alias gremrm          'git remote remove \!:1'
-alias gremmv          'git remote rename \!:1 \!:2'
- 
-alias ginit           'git init . ; echo "Initial git checkin" >> README.txt ; git add . ; git commit -m "Initial commit"'
+alias gb               'git rev-parse --abbrev-ref HEAD'
+alias gbranch          'git branch -v'
+alias gco              'git checkout master'
+alias gcotags          'git checkout tags/\!:1'
+alias gcobranch        'git checkout \!:1'
+alias gnewbranch       'git checkout -b \!:1'
+alias gdelbranch       'git branch -d \!:1'
+alias gforcedelbranch  'git branch -D \!:1'
+alias gpush2branch     'git push -u origin \!:1'
+alias gdelremotebranch 'git push origin --delete \!:1; git fetch --prune;'
+
+# If you want to share a locally created repository, or you want to take contributions from someone else's repository - if you 
+# want to interact in any way with a new repository, it's generally easiest to add it as a remote. You do that by running git 
+# remote add [alias] [url]. That adds [url] under a local remote named [alias]
+alias grem             'git remote -v' 
+alias gremadd          'git remote add origin \!:1'
+alias gremadd2nd       'git remote set-url origin --push --add \!:1'
+alias gremrm           'git remote remove \!:1'
+alias gremmv           'git remote rename \!:1 \!:2'
+
+alias gstash           'git stash' 
+alias gstashl          'git stash list' 
+alias gstasha          'git stash apply stash@{\!:1}'
+alias gstashd          'git stash drop stash@{\!:1}'
+
+alias ginit            'git init . ; echo "Initial git checkin" >> README.txt ; git add . ; git commit -m "Initial commit"'
 
 
 
