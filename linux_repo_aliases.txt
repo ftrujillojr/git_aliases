@@ -18,31 +18,35 @@ alias sshkeygen4    'chmod 600 ~/.ssh/*'
 # GIT START
 # ===================================================================
 alias g               'echo "STATUS\n========" ; git status ; echo ""; git status --porcelain '
-alias gg              'git remote update ; echo "STATUS\n========" ; git status ; echo "\nLOG\n========" ; git --no-pager log -25 --pretty=format:"%h | %d | %an | %cn | %cd | %cr | %s" --all; echo "\n\n(LOCAL) BRANCHES\n========" ; git branch -v ; echo "\n\n(REMOTE) BRANCHES\n========" ; git branch -r ;echo "\nBRANCHES NOT MERGED\n===================" ; git branch --no-merged ; echo "\nBRANCHES ALREADY MERGED\n=====================" ; git branch --merged;echo "\nFiles FETCHed, but not MERGEd\n=========================\n";git diff master origin/master --name-status;echo "\nGIT stash list\n=================\n";git stash list'
+alias gg              'git remote update ; echo "STATUS\n========" ; git status ; echo "\nLOG\n========" ; git --no-pager log -25 --pretty=format:"%h | %d | %an | %cn | %cd | %cr | %s" --all; echo "\n\n(LOCAL) BRANCHES\n========" ; git branch -v ; echo "\n\n(REMOTE) BRANCHES\n========" ; git branch -r ;echo "\nBRANCHES NOT MERGED\n===================" ; git branch --no-merged ; echo "\nBRANCHES ALREADY MERGED\n=====================" ; git branch --merged;echo "\nFiles FETCHed, but not MERGEd (master origin/master)\n=========================\n";git diff master origin/master --name-status;echo "\nFiles FETCHed, but not MERGEd (develop origin/develop)\n=========================\n";git diff develop origin/develop --name-status;echo "\nGIT stash list\n=================\n";git stash list'
 alias ggg             'egrep "alias g[a-z]*" $HOME/.linux_repo_aliases | grep "git" | perl -pi -e "s/alias //g;"'
 alias gggg            'echo "GLOBAL + LOCAL\n" ; git config --list'
  
-alias gf              'echo "FETCH\n" ; git fetch origin master ; echo "\nFETCH_TAGS\n" ; git fetch origin master --tags ; echo "\nDIFF\n" ; git diff master origin/master --name-status'
-alias gfetch          'echo "FETCH\n" ; git fetch \!:1 \!:2 ; echo "FETCH_TAGS\n" ; git fetch --tags \!:1 \!:2'
+alias gf              'echo "FETCH\n" ; git fetch origin; echo "\nFETCH_TAGS\n" ; git fetch origin --tags ; echo "\nDIFF (master origin/master)\n" ; git diff master origin/master --name-status; echo "\nDIFF (develop origin/develop)\n" ; git diff develop origin/develop --name-status'
+alias gfetch          'echo "FETCH\n" ; git fetch \!:1 \!:2 ; echo "FETCH_TAGS\n" ; git fetch --tags \!:1 \!:2;echo "\nDIFF (\!:1 \!:2)\n" git diff \!:1 \!:2'
  
-alias gd              'git diff master origin/master --name-status'
-alias gdiff           'git diff \!:1 \!:2 --name-status'
-alias gdhead          'git status | grep modified | egrep -v ".pyc|.class" | awk "{print $dollarNF}" | xargs git difftool HEAD --'
+alias gd              'echo "DIFF (master origin/master)";git diff master origin/master --name-status'
+alias gd2             'echo "DIFF (develop origin/develop)";git diff develop origin/develop --name-status'
 
 alias gdt             'git difftool master origin/master -- \!:1'
-alias gdt2            'git difftool HEAD -- \!:1'
-alias gdt3            'git difftool FETCH_HEAD -- \!:1'
+alias gdt2            'git difftool develop origin/develop -- \!:1'
 alias gdifftool       'git difftool \!:1 \!:2 -- \!:3'
  
-alias gm              'git merge FETCH_HEAD'
-alias gmerge          'git merge \!:1'
+alias gm              'git merge --ff-only origin/master'
+alias gm2             'git merge --ff-only origin/develop'
+alias gmerge          'git merge --no-ff origin/master'
+alias gmerge2         'git merge --no-ff origin/develop'
+alias gmergefeature   'git checkout \!:1;git pull origin develop;git checkout develop;git merge --no-ff \!:1;git push;echo "\nNOTE: you still have feature branch \!:1\n"'
 alias gmt             'git mergetool --no-prompt \!:1'
  
 alias gpull           'git pull origin master ; git pull origin master --tags'
+alias gpull2          'git pull origin develop ; git pull origin develop --tags'
 alias gpush           'git push origin master ; git push origin master --tags'
+alias gpush2          'git push origin develop ; git push origin develop --tags'
 
 ## If you git push and your updates were rejected due to other changes checked in by someone else, then git pull --rebase
 alias gpullrebase     'git pull --rebase origin master'
+alias gpullrebase2    'git pull --rebase origin develop'
 
 ## Check for merge conflicts with git status, if any.
 ## git add or git rm files one at a time if there are merge issues, then rebase.
@@ -65,32 +69,24 @@ alias gshow           'git show \!:1'
 alias gtag            'git tag -a \!:1 \!:2'
 alias gannotate       'git annotate \!:1'
  
-alias gb               'git rev-parse --abbrev-ref HEAD'
-alias gbranch          'git branch -v'
-alias gco              'git checkout master'
-alias gcotags          'git checkout tags/\!:1'
-alias gcobranch        'git checkout \!:1'
-alias gnewbranch       'git checkout -b \!:1'
-alias gdelbranch       'git branch -d \!:1'
-alias gforcedelbranch  'git branch -D \!:1'
-alias gpush2branch     'git push -u origin \!:1'
-alias gdelremotebranch 'git push origin --delete \!:1; git fetch --prune;'
+alias gbranch         'echo "\nLOCAL BRANCHES\n"; git branch -v'
+alias gbranch2         'echo "\nREMOTE BRANCHES\n"; git branch -r'
 
-# If you want to share a locally created repository, or you want to take contributions from someone else's repository - if you 
-# want to interact in any way with a new repository, it's generally easiest to add it as a remote. You do that by running git 
-# remote add [alias] [url]. That adds [url] under a local remote named [alias]
-alias grem             'git remote -v' 
-alias gremadd          'git remote add origin \!:1'
-alias gremadd2nd       'git remote set-url origin --push --add \!:1'
-alias gremrm           'git remote remove \!:1'
-alias gremmv           'git remote rename \!:1 \!:2'
+alias gco             'git checkout master'
+alias gco2            'git checkout develop'
 
-alias gstash           'git stash' 
-alias gstashl          'git stash list' 
-alias gstasha          'git stash apply stash@{\!:1}'
-alias gstashd          'git stash drop stash@{\!:1}'
-
-alias ginit            'git init . ; echo "Initial git checkin" >> README.txt ; git add . ; git commit -m "Initial commit"'
+alias gcotags         'git checkout tags/\!:1'
+alias gcobranch       'git checkout \!:1'
+alias gconewfeature   'git checkout -b \!:1 develop'
+alias gdelbranch      'git branch -d \!:1'
+alias gforcedelbranch 'git branch -D \!:1'
+ 
+alias gremadd         'git remote add origin \!:1'
+alias gremadd2nd      'git remote set-url origin --push --add \!:1'
+alias gremrm          'git remote remove \!:1'
+alias gremmv          'git remote rename \!:1 \!:2'
+ 
+alias ginit           'git init . ; echo "Initial git checkin" >> README.txt ; git add . ; git commit -m "Initial commit"'
 
 
 
